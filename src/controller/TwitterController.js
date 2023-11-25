@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/api/v1/tweet/:id/tweet-reach', async (req, res, next) => {
+router.get('/api/v1/tweet', async (req, res, next) => {
 
 	try {
 
