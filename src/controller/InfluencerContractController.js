@@ -11,22 +11,24 @@ let privateKey = "b547298ba25e6394beec9ded0f8e431c0fab50948dea80844ece8bf468a746
 
 const account = web3.eth.accounts.privateKeyToAccount(privateKey);
 web3.eth.defaultAccount = account.address;
+web3.eth.accounts.wallet.add(account);
 
 router.get('/api/v1/influencer-contract/approve', async (req, res, next) => {
 
 	try {
 
-		let result = await contract.methods.acceptInfluencerContract(req.query["id"], `?reach=${req.query["reach"]}&likes=${req.query["likes"]}`).send({
+		contract.methods.acceptInfluencerContract(req.query["id"], `?reach=${req.query["reach"]}&likes=${req.query["likes"]}`).send({
 			from: account.address,
 			gas: 1000000
-		});
-		console.log(result);
+		}).then(data => {
+			console.log(data);
+		})
 
 		res.status(200).send({
 			status: "OK"
 		});
 	} catch (error) {
-
+		console.log(error);
 		res.status(500).send("Internal Server Error");
 	}
 });
@@ -38,16 +40,16 @@ router.post('/api/v1/influencer-contract/finish', async (req, res, next) => {
 		let result = await contract.methods.request(req.query["id"]).send({
 			from: account.address,
 			gas: 1000000
+		}).then(data => {
+			console.log(result);
+
 		});
-		console.log(result);
 
 		res.status(200).send({
-			data: {
-				tweetReachAndLikes: req.query["reach"] + "," + req.query["likes"],
-			}
+			status: "OK"
 		});
 	} catch (error) {
-
+		console.log(error);
 		res.status(500).send("Internal Server Error");
 	}
 });
