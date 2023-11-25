@@ -9,8 +9,7 @@ router.get('/api/v1/tweet', async (req, res, next) => {
 
 		res.status(200).send({
 			data: {
-				tweetReach: (1 + Math.floor(Math.random() * 1000000000)),
-				tweetLikes: (1 + Math.floor(Math.random() * 1000000000)),
+				tweetReachAndLikes: req.query["reach"] + "," + req.query["likes"],
 			}
 		});
 	} catch (error) {
